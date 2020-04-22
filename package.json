@@ -1,0 +1,32 @@
+{
+  "name": "mandatory-backend-1",
+  "version": "1.0.0",
+  "description": "Slack rip-off project",
+  "main": "server.js",
+  "scripts": {
+    "start": "nodemon server.js",
+    "test": "mocha"
+  },
+  "keywords": [
+    "supertest",
+    "mocha",
+    "node",
+    "express",
+    "express-validator",
+    "socket.io",
+    "instant messenger",
+    "chat",
+    "slack"
+  ],
+  "author": "Hampus Walentin Olsen",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^8.2.0",
+    "express-validator": "^6.4.0",
+    "mocha": "^7.1.1",
+    "nodemon": "^2.0.3",
+    "socket.io": "^2.3.0",
+    "supertest": "^4.0.2",
+    "uuid": "^7.0.3"
+  }
+}
