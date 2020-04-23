@@ -1,5 +1,5 @@
 {
-  "name": "mandatory-backend-1",
+  "name": "slackers-server",
   "version": "1.0.0",
   "description": "Slack rip-off project",
   "main": "server.js",
