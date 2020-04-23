@@ -20,12 +20,12 @@ exports.create = async (req, res) => {
       res.sendStatus(201);
    } catch ({ status, message }) {
       res.status(status).send(message);
-   }
+   };
 };
 
 exports.login = async (req, res) => {
    const user = User.retrieve(req.body.email);
-   if (!user) return res.status(400).send({ error: 'Cannot find user with provided e-mail.' });
+   if (!user) return res.status(400).send({ error: 'Unregistered e-mail.' });
 
    try {
       const authenticated = await bcrypt.compare(req.body.password, user.password);
@@ -53,7 +53,6 @@ exports.refresh = (req, res) => {
 
    jwt.verify(req.body.refreshToken, process.env.REFRESH_TOKEN_SECRET, (error, user) => {
       if (error) return res.status(403).send({ error: 'Invalid refresh token. Session terminated.' });
-      console.log(user);
       const accessToken = jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '30m' });
 
       res.status(201).send({ accessToken });
