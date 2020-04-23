@@ -5,8 +5,4 @@ const io = require('socket.io')(server);
 
 const PORT = process.env.PORT || 6969;
 
-io.on('connection', (socket) => {
-   socket.send('sup bro!');
-});
-
 server.listen(PORT, () => console.log(`Server running on port ${PORT}.`));
