@@ -5,6 +5,6 @@ app.use(require('cookie-parser')());
 app.use(express.json());
 app.use(express.static('public'));
 
-app.use(require('./routes/users/index'));
+app.use('/users', require('./routes/users/index'));
 
 module.exports = app;

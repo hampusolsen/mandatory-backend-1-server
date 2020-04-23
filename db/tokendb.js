@@ -1,15 +1,15 @@
 const { tokens, save } = require('./db');
 
 exports.delete = (token) => {
-   tokens.data = tokens.data.filter(entry => entry !== token);
+   tokens.entries = tokens.entries.filter(entry => entry !== token);
    save(tokens);
 };
 
 exports.save = (token) => {
-   tokens.data.push(token);
+   tokens.entries.push(token);
    save(tokens);
 };
 
 exports.validate = (token) => {
-   return tokens.data.includes(token);
+   return tokens.entries.includes(token);
 };

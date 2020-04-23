@@ -11,8 +11,9 @@ route.post(
 
 route.get(
    '/',
+   validate('LOGIN_USER'),
    middleware.authenticate,
-   controllers.retrieve,
+   controllers.login,
 );
 
 route.post(

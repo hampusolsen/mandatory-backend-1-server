@@ -18,8 +18,8 @@ exports.create = async (req, res) => {
       User.save(user);
 
       res.sendStatus(201);
-   } catch {
-      res.sendStatus(500);
+   } catch ({ status, message }) {
+      res.status(status).send(message);
    }
 };
 
@@ -58,8 +58,4 @@ exports.refresh = (req, res) => {
 
       res.status(201).send({ accessToken });
    });
-};
-
-exports.retrieve = (req, res) => {
-
 };
