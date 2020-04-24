@@ -1,4 +1,4 @@
-const { body, query, header, param } = require('express-validator');
+const { body, query, param } = require('express-validator');
 
 exports.validate = (method) => {
    switch (method) {
@@ -11,13 +11,11 @@ exports.validate = (method) => {
          ];
       case 'DELETE_USER':
          return [
-            header('Authorization', 'Missing Authorization header.').exists(),
             param('userId').exists().isUUID(),
             body('password').exists().isLength({ min: 7 }),
          ];
       case 'EDIT_USER':
          return [
-            header('Authorization', 'Missing Authorization header.').exists(),
             param('userId').exists().isUUID(),
             body(['email', 'name', 'password', 'date-of-birth']).exists(),
             body('email').isEmail(),

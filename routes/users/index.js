@@ -23,16 +23,38 @@ route.post(
 
 route.put(
    '/:userId',
-   localware.validate('EDIT_USER'),
    middleware.authenticate,
+   localware.validate('EDIT_USER'),
    controller.edit,
 );
 
 route.delete(
    '/:userId',
-   localware.validate('DELETE_USER'),
    middleware.authenticate,
+   localware.validate('DELETE_USER'),
    controller.delete,
 );
+
+/** @TODO_BELOW */
+// route.post(
+//    '/logout',
+//    middleware.authenticate,
+//    localware.validate('LOGOUT_USER'),
+//    controller.logout,
+// );
+
+// route.get(
+//    '/:userId',
+//    middleware.authenticate,
+//    localware.validate('RETRIEVE_USER'),
+//    controller.retrieve,
+// );
+
+// route.get(
+//    '/',
+//    middleware.authenticate,
+//    localware.validate('RETRIEVE_USERS'),
+//    controller.retrieveMany,
+// );
 
 module.exports = route;

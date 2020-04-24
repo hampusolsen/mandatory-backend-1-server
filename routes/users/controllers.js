@@ -21,7 +21,7 @@ exports.create = async (req, res) => {
 
       User.save(user);
 
-      res.sendStatus(201);
+      res.status(201).send(user);
    } catch ({ status, message }) {
       res.status(status).send(message);
    };
@@ -42,7 +42,7 @@ exports.delete = async (req, res) => {
          res.status(403).send({ error: 'Incorrect password.' });
       };
    } catch {
-      res.sendStatus(500);
+      res.status(400).send({ error: 'Id not found.' });
    };
 };
 
@@ -111,7 +111,7 @@ exports.refresh = (req, res) => {
 
    jwt.verify(req.body.refreshToken, process.env.REFRESH_TOKEN_SECRET, (error, data) => {
       if (error) return res.status(403).send({ error: 'Invalid refresh token. Session terminated.' });
-      const accessToken = jwt.sign(data, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '30m' });
+      const accessToken = jwt.sign(data, process.env.ACCESS_TOKEN_SECRET);
 
       res.status(201).send({ accessToken });
    });
