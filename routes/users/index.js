@@ -1,25 +1,38 @@
 const route = require('express').Router();
-const controllers = require('./controllers');
-const middleware = require('./middleware');
-const validate = require('./validate');
+const controller = require('./controllers');
+const localware = require('./localware');
+const middleware = require('../../mw/mw');
 
 route.post(
    '/',
-   validate('CREATE_USER'),
-   controllers.create,
+   localware.validate('CREATE_USER'),
+   controller.create,
 );
 
-route.get(
-   '/',
-   validate('LOGIN_USER'),
-   middleware.authenticate,
-   controllers.login,
+route.post(
+   '/login',
+   localware.validate('LOGIN_USER'),
+   controller.login,
 );
 
 route.post(
    '/token',
-   validate('REFRESH_TOKEN'),
-   controllers.refresh,
+   localware.validate('REFRESH_TOKEN'),
+   controller.refresh,
+);
+
+route.put(
+   '/:userId',
+   localware.validate('EDIT_USER'),
+   middleware.authenticate,
+   controller.edit,
+);
+
+route.delete(
+   '/:userId',
+   localware.validate('DELETE_USER'),
+   middleware.authenticate,
+   controller.delete,
 );
 
 module.exports = route;
