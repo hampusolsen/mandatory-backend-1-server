@@ -57,7 +57,7 @@ exports.edit = async (req, res) => {
    try {
       const authorized = await compare(req.body.password, user.password);
       if (!authorized) throw { status: 403, message: 'Incorrect password.' };
-      const updatedUser = { ...req.body };
+      const updatedUser = { ...user, ...req.body };
 
       if (updatedUser.newPassword) {
          const hashedPassword = await hash(req.body.newPassword, 10);
