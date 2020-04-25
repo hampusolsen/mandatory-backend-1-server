@@ -17,6 +17,6 @@ exports.tokens = {
 
 exports.save = ({ path, entries }) => {
    fs.writeFile(path, JSON.stringify({ entries }), (error) => {
-      if (error) throw { status: 500, message: 'Error writing to database .json-file.' };
+      if (error) throw { status: 500, message: 'Error writing to database.' };
    });
 };

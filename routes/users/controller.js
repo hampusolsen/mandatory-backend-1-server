@@ -1,4 +1,4 @@
-const bcrypt = require('bcrypt');
+const { hash, compare } = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const uuid = require('uuid').v4;
 const { validationResult } = require('express-validator');
@@ -10,12 +10,14 @@ exports.create = async (req, res) => {
    if (!error.isEmpty()) return res.status(400).send(error);
 
    try {
-      const hashedPassword = await bcrypt.hash(req.body.password, 10);
+      const hashedPassword = await hash(req.body.password, 10);
 
       const user = {
          ...req.body,
          password: hashedPassword,
          rooms: [],
+         dms: [],
+         owner: [],
          id: uuid(),
       };
 
@@ -31,18 +33,18 @@ exports.delete = async (req, res) => {
    const error = validationResult(req);
    if (!error.isEmpty()) return res.status(400).send(error);
 
-   const user = User.retrieve({ id: req.params.userId });
+   const { userId } = req.params;
 
    try {
-      const authorized = await bcrypt.compare(req.body.password, user.password);
-      if (authorized) {
-         User.delete(user);
-         res.sendStatus(204);
-      } else {
-         res.status(403).send({ error: 'Incorrect password.' });
-      };
-   } catch {
-      res.status(400).send({ error: 'Id not found.' });
+      const user = User.retrieve({ id: userId });
+      const authorized = await compare(req.body.password, user.password);
+      if (!authorized) throw { status: 403, message: 'Invalid password.' };
+
+      User.delete(userId);
+
+      res.sendStatus(204);
+   } catch ({ status, message }) {
+      res.status(status).send({ error: message });
    };
 };
 
@@ -53,23 +55,20 @@ exports.edit = async (req, res) => {
    const user = User.retrieve({ id: req.params.userId });
 
    try {
-      const authorized = await bcrypt.compare(req.body.password, user.password);
-      if (authorized) {
-         const updatedUser = { ...req.body };
+      const authorized = await compare(req.body.password, user.password);
+      if (!authorized) throw { status: 403, message: 'Incorrect password.' };
+      const updatedUser = { ...req.body };
 
-         if (updatedUser.newPassword) {
-            const hashedPassword = await bcrypt.hash(req.body.newPassword, 10);
+      if (updatedUser.newPassword) {
+         const hashedPassword = await hash(req.body.newPassword, 10);
 
-            updatedUser.password = hashedPassword;
-            delete updatedUser.newPassword;
-         }
+         updatedUser.password = hashedPassword;
+         delete updatedUser.newPassword;
+      }
 
-         User.patch(updatedUser);
+      User.patch(updatedUser);
 
-         res.sendStatus(204);
-      } else {
-         res.status(403).send({ error: 'Incorrect password.' });
-      };
+      res.sendStatus(204);
    } catch ({ status, message }) {
       res.status(status).send(message);
    };
@@ -83,19 +82,17 @@ exports.login = async (req, res) => {
    if (!user) return res.status(400).send({ error: 'Unregistered e-mail.' });
 
    try {
-      const authorized = await bcrypt.compare(req.body.password, user.password);
-      if (authorized) {
-         const accessToken = jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '30m' });
-         const refreshToken = jwt.sign(user, process.env.REFRESH_TOKEN_SECRET, { expiresIn: '1d' });
+      const authorized = await compare(req.body.password, user.password);
+      if (!authorized) throw { status: 403, message: 'Incorrect password.' };
 
-         Token.save(refreshToken);
+      const accessToken = jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '30m' });
+      const refreshToken = jwt.sign(user, process.env.REFRESH_TOKEN_SECRET, { expiresIn: '1d' });
 
-         res.status(200).send({ accessToken, refreshToken });
-      } else {
-         res.status(403).send({ error: 'Incorrect password.' });
-      };
-   } catch {
-      res.sendStatus(500);
+      Token.save(refreshToken);
+
+      res.status(200).send({ accessToken, refreshToken });
+   } catch ({ status, message }) {
+      res.status(status).send({ error: message });
    };
 };
 
@@ -104,14 +101,15 @@ exports.refresh = (req, res) => {
    if (!error.isEmpty()) return res.status(400).send(error);
 
    const validated = Token.validate(req.body.refreshToken);
+   console.log(validated);
    if (!validated) {
       Token.delete(req.body.refreshToken);
       return res.status(403).send({ error: 'Token life length expired. Session terminated.' });
    };
 
-   jwt.verify(req.body.refreshToken, process.env.REFRESH_TOKEN_SECRET, (error, data) => {
+   jwt.verify(req.body.refreshToken, process.env.REFRESH_TOKEN_SECRET, (error, user) => {
       if (error) return res.status(403).send({ error: 'Invalid refresh token. Session terminated.' });
-      const accessToken = jwt.sign(data, process.env.ACCESS_TOKEN_SECRET);
+      const accessToken = jwt.sign(user, process.env.ACCESS_TOKEN_SECRET);
 
       res.status(201).send({ accessToken });
    });

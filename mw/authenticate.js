@@ -6,8 +6,9 @@ module.exports = authenticate = (req, res, next) => {
 
    if (!token) return res.status(401).send({ error: 'Bearer not provided.' });
 
-   jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (error, _body) => {
+   jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (error, user) => {
       if (error) return res.status(403).send({ error: 'Invalid access token.' });
+      req.user = user;
       next();
    });
 };

@@ -1,5 +1,5 @@
 const route = require('express').Router();
-const controller = require('./controllers');
+const controller = require('./controller');
 const localware = require('./localware');
 const middleware = require('../../mw/mw');
 
@@ -16,7 +16,7 @@ route.post(
 );
 
 route.post(
-   '/token',
+   '/:userId/token',
    localware.validate('REFRESH_TOKEN'),
    controller.refresh,
 );
