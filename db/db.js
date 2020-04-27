@@ -10,11 +10,6 @@ exports.users = {
    path: './db/store/userdb.json',
 };
 
-exports.tokens = {
-   entries: require('./store/tokendb.json').entries,
-   path: './db/store/tokendb.json',
-};
-
 exports.save = ({ path, entries }) => {
    fs.writeFile(path, JSON.stringify({ entries }), (error) => {
       if (error) throw { status: 500, message: 'Error writing to database.' };

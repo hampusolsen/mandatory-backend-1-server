@@ -1,15 +1,15 @@
-const { tokens, save } = require('./db');
+const tokens = {};
 
 exports.delete = (token) => {
-   tokens.entries = tokens.entries.filter(entry => entry !== token);
-   save(tokens);
+   for (userId in tokens) {
+      if (tokens[userId] === token) delete tokens[userId];
+   }
 };
 
-exports.save = (token) => {
-   tokens.entries.push(token);
-   save(tokens);
+exports.save = (token, userId) => {
+   tokens[userId] = token;
 };
 
-exports.validate = (token) => {
-   return tokens.entries.includes(token);
+exports.validate = (token, userId) => {
+   return tokens[userId] === token;
 };

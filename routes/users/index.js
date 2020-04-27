@@ -50,11 +50,4 @@ route.delete(
 //    controller.retrieve,
 // );
 
-// route.get(
-//    '/',
-//    middleware.authenticate,
-//    localware.validate('RETRIEVE_USERS'),
-//    controller.retrieveMany,
-// );
-
 module.exports = route;

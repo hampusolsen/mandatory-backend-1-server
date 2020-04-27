@@ -11,14 +11,14 @@ route.post(
 );
 
 route.post(
-   '/join',
+   '/join/:roomId',
    middleware.authenticate,
    localware.validate('JOIN_ROOM'),
    controller.join,
 );
 
 route.post(
-   '/leave',
+   '/leave/:roomId',
    middleware.authenticate,
    localware.validate('LEAVE_ROOM'),
    controller.leave,
@@ -29,6 +29,13 @@ route.delete(
    middleware.authenticate,
    localware.validate('DELETE_ROOM'),
    controller.delete,
+);
+
+route.get(
+   '/:roomId',
+   middleware.authenticate,
+   localware.validate('RETRIEVE_ROOM'),
+   controller.retrieve,
 );
 
 module.exports = route;

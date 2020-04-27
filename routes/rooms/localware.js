@@ -27,10 +27,11 @@ const { body, param, query } = require('express-validator');
  */
 
 const ERR_ID = 'Invalid id.';
+const ERR_PARAM = 'Invalid URI parameter.';
 const ERR_PW = 'Invalid password.';
+const ERR_QUERY = 'Invalid query string';
 const ERR_ROLE = 'Invalid user role. Expected "admin", "user" or "vip".';
 const ERR_TITLE = 'Invalid room title.';
-const ERR_QUERY = 'Invalid query string';
 
 const isLengthOrNull = (value, _meta) => typeof value === 'string' && value.length >= 7 || value === null;
 
@@ -38,7 +39,6 @@ exports.validate = (method) => {
    switch (method) {
       case 'CREATE_ROOM':
          return [
-            query('ownerId', ERR_ID).isUUID(),
             body('title', ERR_TITLE).isLength({ min: 1 }),
             body('motd')
                .isString()
@@ -50,7 +50,7 @@ exports.validate = (method) => {
          ];
       case 'JOIN_ROOM':
          return [
-            query(['roomId', 'userId'], ERR_ID).isUUID(),
+            param('roomId', ERR_PARAM).isUUID(),
             body('role', ERR_ROLE).isIn(['admin', 'user', 'vip']),
             body(['password', 'adminPassword'], ERR_PW)
                .custom(isLengthOrNull)
@@ -58,13 +58,19 @@ exports.validate = (method) => {
          ];
       case 'LEAVE_ROOM':
          return [
-            query(['roomId', 'userId'], ERR_ID).isUUID(),
+            param('roomId', ERR_PARAM).isUUID(),
          ];
       case 'DELETE_ROOM':
          return [
             param('roomId', ERR_ID).isUUID(),
             query('delete', ERR_QUERY).equals('true'),
-            body('adminPassword', ERR_PW).isLength({ min: 7 }),
+            body('adminPassword', ERR_PW)
+               .isLength({ min: 7 })
+               .optional(),
+         ];
+      case 'RETRIEVE_ROOM':
+         return [
+            param('roomId', ERR_ID).isUUID(),
          ];
    }
 };
