@@ -7,7 +7,6 @@ const { body, query, param } = require('express-validator');
  * {
  *    name: String,
  *    password: String,
- *    'date-of-birth': ISO08601 formatted string,
  *    email: E-mail formatted string,
  * }
  * 
@@ -15,7 +14,6 @@ const { body, query, param } = require('express-validator');
  * {
  *    name: String,
  *    password: String,
- *    'date-of-birth': ISO08601 formatted string,
  *    email: E-mail formatted string,
  *    ?newPassword: String,
  * }
@@ -37,7 +35,6 @@ const { body, query, param } = require('express-validator');
  * }
  */
 
-const ERR_ISO = 'Invalid ISO date string.';
 const ERR_EMAIL = 'Invalid email.';
 const ERR_ID = 'Invalid ID.';
 const ERR_JWT = 'Missing or invalid JWT format.';
@@ -52,7 +49,6 @@ exports.validate = (method) => {
             body('name', ERR_NAME).isLength({ min: 2 }),
             body('email', ERR_EMAIL).isEmail(),
             body('password', ERR_PW).isLength({ min: 7 }),
-            body('date-of-birth', ERR_ISO).isISO8601(),
          ];
       case 'DELETE_USER':
          return [
@@ -64,7 +60,6 @@ exports.validate = (method) => {
             param('userId', ERR_ID).isUUID(),
             body('email', ERR_EMAIL).isEmail(),
             body('password', ERR_PW).isLength({ min: 7 }),
-            body('date-of-birth', ERR_ISO).isISO8601(),
             body('newPassword', ERR_PW)
                .isLength({ min: 7 })
                .optional(),

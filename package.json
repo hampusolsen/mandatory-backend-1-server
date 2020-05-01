@@ -16,7 +16,7 @@
     "socket.io",
     "instant messenger",
     "chat",
-    "slack"
+    "slackers"
   ],
   "author": "Hampus Walentin Olsen",
   "license": "ISC",
