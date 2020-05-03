@@ -11,6 +11,7 @@ exports.create = async (req, res) => {
    const created = new Date().toLocaleString('sv-SE');
    const owner = { name: req.user.name, id: req.user.id };
    const roomId = uuid();
+   const motd = req.body.motd || '';
    let password = req.body.password || '';
    let adminPassword = req.body.adminPassword || '';
 
@@ -25,12 +26,8 @@ exports.create = async (req, res) => {
 
       const room = {
          ...req.body,
-         messages: [{
-            username: 'Server',
-            content: `Room created ${created}`,
-            timestamp: created,
-            id: 0,
-         }],
+         messages: [],
+         motd,
          admins: [owner],
          users: [owner],
          owner,

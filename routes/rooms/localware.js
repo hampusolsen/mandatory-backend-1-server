@@ -6,8 +6,9 @@ const { body, param, query } = require('express-validator');
  * @CREATE_ROOM POST /rooms?ownerId=[userId]
  * {
  *    title: String,
- *    password: String || undefined,
- *    ?motd: String,
+ *    password: String,
+ *    adminPassword: String,
+ *    motd: String,
  * }
  * 
  * @JOIN_ROOM POST /rooms/join?roomId=[roomId]&userId=[userId]

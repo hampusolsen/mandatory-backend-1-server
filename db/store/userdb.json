@@ -1,3 +1,32 @@
 {
-   "entries": []
+   "entries": [
+      {
+         "name": "hampuscrampus",
+         "email": "hampe@dampe.com",
+         "password": "$2b$10$ZhKtY0f5UKzZCURWyeaZDu6fVnt8pnGO4H8vhdFzgeIOS4XwVzVXu",
+         "rooms": [],
+         "dms": [],
+         "owner": [],
+         "id": "1e1b8a8d-f31b-4048-a8df-f111099b1059"
+      },
+      {
+         "name": "hampusolsen",
+         "email": "hampus@olsen.com",
+         "password": "$2b$10$WgHX7hUlhBvMzSGn30YXherGQ4nHsNtBC/R313lwH3/aaf0nKrZ0C",
+         "rooms": [
+            {
+               "title": "My Room",
+               "id": "33183c27-7343-450d-a234-9b499f2267ea"
+            }
+         ],
+         "dms": [],
+         "owner": [
+            {
+               "title": "My Room",
+               "id": "33183c27-7343-450d-a234-9b499f2267ea"
+            }
+         ],
+         "id": "c8101d6f-2a6c-4d95-adad-06ad515f03e7"
+      }
+   ]
 }

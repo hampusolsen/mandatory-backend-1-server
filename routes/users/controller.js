@@ -99,7 +99,10 @@ exports.login = async (req, res) => {
       const refreshToken = jwt.sign(user, process.env.REFRESH_TOKEN_SECRET, { expiresIn: '1d' });
 
       Token.save(refreshToken);
-      res.cookie('accessToken', accessToken).status(200).send({ refreshToken });
+      res
+         .cookie('accessToken', accessToken)
+         .status(200)
+         .send({ refreshToken, user });
    } catch ({ status, message }) {
       res.status(status).send({ error: message });
    };

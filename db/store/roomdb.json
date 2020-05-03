@@ -1,3 +1,29 @@
 {
-   "entries": []
+   "entries": [
+      {
+         "title": "My Room",
+         "adminPassword": "$2b$10$mZKTDExQtjfoKbPg83UYyu8yb793SdS3xibCuGKjLaor03mEv.50m",
+         "motd": "message",
+         "messages": [],
+         "admins": [
+            {
+               "name": "hampusolsen",
+               "id": "c8101d6f-2a6c-4d95-adad-06ad515f03e7"
+            }
+         ],
+         "users": [
+            {
+               "name": "hampusolsen",
+               "id": "c8101d6f-2a6c-4d95-adad-06ad515f03e7"
+            }
+         ],
+         "owner": {
+            "name": "hampusolsen",
+            "id": "c8101d6f-2a6c-4d95-adad-06ad515f03e7"
+         },
+         "created": "2020-5-2 17:03:42",
+         "password": "",
+         "id": "33183c27-7343-450d-a234-9b499f2267ea"
+      }
+   ]
 }
