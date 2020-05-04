@@ -2,28 +2,29 @@
    "entries": [
       {
          "title": "My Room",
-         "adminPassword": "$2b$10$mZKTDExQtjfoKbPg83UYyu8yb793SdS3xibCuGKjLaor03mEv.50m",
-         "motd": "message",
+         "adminPassword": "$2b$10$rTqoiu4hadt2E2KNSMYmKOcJLnZzSC4U8W8g6WGnYFTnNNDM1AIDi",
          "messages": [],
+         "motd": "",
          "admins": [
             {
-               "name": "hampusolsen",
-               "id": "c8101d6f-2a6c-4d95-adad-06ad515f03e7"
+               "name": "WampDaChamp",
+               "id": "45dc591a-33dd-4246-9046-94640b80a0eb"
             }
          ],
          "users": [
             {
-               "name": "hampusolsen",
-               "id": "c8101d6f-2a6c-4d95-adad-06ad515f03e7"
+               "name": "WampDaChamp",
+               "id": "45dc591a-33dd-4246-9046-94640b80a0eb"
             }
          ],
          "owner": {
-            "name": "hampusolsen",
-            "id": "c8101d6f-2a6c-4d95-adad-06ad515f03e7"
+            "name": "WampDaChamp",
+            "id": "45dc591a-33dd-4246-9046-94640b80a0eb"
          },
-         "created": "2020-5-2 17:03:42",
+         "created": "2020-5-4 21:12:31",
          "password": "",
-         "id": "33183c27-7343-450d-a234-9b499f2267ea"
+         "id": "3dce41e9-c7e2-4b23-8868-febc0b0cecb6",
+         "private": false
       }
    ]
 }

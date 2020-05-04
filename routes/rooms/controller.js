@@ -12,6 +12,7 @@ exports.create = async (req, res) => {
    const owner = { name: req.user.name, id: req.user.id };
    const roomId = uuid();
    const motd = req.body.motd || '';
+   const private = req.body.password ? true : false;
    let password = req.body.password || '';
    let adminPassword = req.body.adminPassword || '';
 
@@ -22,6 +23,7 @@ exports.create = async (req, res) => {
       const roomMinified = {
          title: req.body.title,
          id: roomId,
+         private,
       };
 
       const room = {
@@ -35,6 +37,7 @@ exports.create = async (req, res) => {
          password,
          adminPassword,
          id: roomId,
+         private,
       };
 
       const user = User.retrieve({ id: owner.id });
@@ -45,7 +48,7 @@ exports.create = async (req, res) => {
       User.patch(user);
       Room.save(room);
 
-      res.status(201).send(room);
+      res.status(201).send(roomMinified);
    } catch (error) {
       res.status(status).send({ error: message });
    };
@@ -136,8 +139,11 @@ exports.retrieve = (req, res) => {
    if (!error.isEmpty()) return res.status(400).send(error);
 
    try {
-      const room = Room.retrieve(req.params.roomId);
+      const room = { ...Room.retrieve(req.params.roomId) };
       if (!room) throw { status: 404, message: 'Invalid room id.' };
+
+      delete room.password;
+      delete room.adminPassword;
 
       res.status(200).send(room);
    } catch ({ status, message }) {

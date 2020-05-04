@@ -19,6 +19,7 @@ exports.create = async (req, res) => {
          dms: [],
          owner: [],
          id: uuid(),
+         pic: 'default',
       };
 
       User.save(user);
@@ -27,6 +28,8 @@ exports.create = async (req, res) => {
       const refreshToken = jwt.sign(user, process.env.REFRESH_TOKEN_SECRET, { expiresIn: '1d' });
 
       Token.save(refreshToken);
+
+      delete user.password;
 
       res.cookie('accessToken', accessToken)
          .status(201)
@@ -88,10 +91,10 @@ exports.login = async (req, res) => {
    const error = validationResult(req);
    if (!error.isEmpty()) return res.status(400).send(error);
 
-   const user = User.retrieve({ email: req.body.email });
-   if (!user) return res.status(400).send({ error: 'Unregistered e-mail.' });
-
    try {
+      const user = { ...User.retrieve({ email: req.body.email }) };
+      if (!user) throw { status: 400, message: 'Unregistered e-mail.' };
+
       const authorized = await compare(req.body.password, user.password);
       if (!authorized) throw { status: 403, message: 'Incorrect password.' };
 
@@ -99,6 +102,7 @@ exports.login = async (req, res) => {
       const refreshToken = jwt.sign(user, process.env.REFRESH_TOKEN_SECRET, { expiresIn: '1d' });
 
       Token.save(refreshToken);
+      delete user.password;
       res
          .cookie('accessToken', accessToken)
          .status(200)
