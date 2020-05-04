@@ -73,5 +73,10 @@ exports.validate = (method) => {
          return [
             param('roomId', ERR_ID).isUUID(),
          ];
-   }
+      case 'RETRIEVE_PRIVATE_ROOM':
+         return [
+            param('roomId', ERR_ID).isUUID(),
+            body('password', ERR_PW).isLength({ min: 7 }),
+         ];
+   };
 };

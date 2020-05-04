@@ -134,7 +134,7 @@ exports.leave = async (req, res) => {
    };
 };
 
-exports.retrieve = (req, res) => {
+exports.retrieve = async (req, res) => {
    const error = validationResult(req);
    if (!error.isEmpty()) return res.status(400).send(error);
 
@@ -142,11 +142,17 @@ exports.retrieve = (req, res) => {
       const room = { ...Room.retrieve(req.params.roomId) };
       if (!room) throw { status: 404, message: 'Invalid room id.' };
 
+      if (room.password) {
+         if (!req.body.password) throw { status: 403, message: 'Provide password.' };
+         const authorized = await compare(req.body.password, room.password);
+         if (!authorized) throw { status: 403, message: 'Invalid room password.' };
+      };
+
       delete room.password;
       delete room.adminPassword;
 
       res.status(200).send(room);
    } catch ({ status, message }) {
       res.status(status).send({ error: message });
-   }
+   };
 };

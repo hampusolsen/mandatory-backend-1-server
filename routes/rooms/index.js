@@ -38,4 +38,11 @@ route.get(
    controller.retrieve,
 );
 
+route.post(
+   '/:roomId',
+   middleware.authenticate,
+   localware.validate('RETRIEVE_PRIVATE_ROOM'),
+   controller.retrieve,
+);
+
 module.exports = route;
